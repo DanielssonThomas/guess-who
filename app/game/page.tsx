@@ -45,7 +45,7 @@ const GuessWhoGame = async () => {
   console.log(players);
 
   return (
-    <div className="w-full h-full flex justify-center">
+    <div className="w-screen h-screen">
       <GameLayout players={players} />
     </div>
   );

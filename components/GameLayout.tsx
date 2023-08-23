@@ -12,7 +12,7 @@ interface GameLayoutProps {
 
 const Layout: React.FC<GameLayoutProps> = ({ players }) => {
   return (
-    <div className="flex">
+    <div className="flex flex-wrap">
       {players.map((player) => (
         <Card name={player.name} image={player.image} key={player.id} />
       ))}
