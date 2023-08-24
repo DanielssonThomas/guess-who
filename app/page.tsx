@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import AddPlayerForm from "./addPlayer/addPlayerForm";
 import { Database } from "@/lib/database.types";
+
 export const dynamic = "force-dynamic";
 
 export default async function Index() {
@@ -12,15 +13,16 @@ export default async function Index() {
   } = await supabase.auth.getUser();
 
   return user?.aud === "authenticated" ? (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-screen flex flex-col items-center">
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
         <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm text-foreground">
           <div className="w-full flex justify-center items-center gap-4">
-            Hey!
+            Hey! Enter your information, get a nice profile pic and answer some
+            questions to get started!
           </div>
         </div>
       </nav>
-      <div className="w-full pt-8 flex justify-center items-center">
+      <div className="w-screen pt-8 flex justify-center items-center">
         <AddPlayerForm />
       </div>
     </div>
