@@ -36,7 +36,7 @@ const Layout: React.FC<GameLayoutProps> = ({ players }) => {
           )
         )}
       </div>
-      <div className="flex w-full h-full items-center justify-center gap-4">
+      <div className="flex w-full h-full items-center justify-around gap-5">
         <button
           className="h-8 p-2 bg-slate-200 flex justify-center items-center rounded"
           type="button"

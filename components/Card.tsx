@@ -10,8 +10,14 @@ interface GameCardProps {
 }
 const GameCard = ({ name, image, key, twStyle }: GameCardProps) => {
   return image !== null ? (
-    <div className="w-6 h-6 p-8 text-center cursor-pointer" key={key}>
-      <Image src={image} alt={name} width={500} height={500} />
+    <div
+      className={clsx(
+        "h-[100px] text-center flex flex-col items-center justify-center cursor-pointer",
+        twStyle
+      )}
+      key={key}
+    >
+      <Image src={image} alt="missing profile image" width={90} height={90} />
       <h2 className="text-white">{name}</h2>
     </div>
   ) : (
@@ -25,8 +31,8 @@ const GameCard = ({ name, image, key, twStyle }: GameCardProps) => {
       <Image
         src={missingImage}
         alt="missing profile image"
-        width={80}
-        height={80}
+        width={90}
+        height={90}
       />
       <h2 className="text-white">{name}</h2>
     </div>

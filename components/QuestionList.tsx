@@ -42,7 +42,7 @@ const AllQuestions: QuestionProps[] = [
 
 const Questions = () => {
   return (
-    <div className="bg-btn-background hover:bg-btn-background-hover px-8">
+    <div className="bg-btn-background px-8">
       <div className="w-full h-8 flex justify-between items-center">
         <div></div>
         <div className="w-12 flex justify-center">
