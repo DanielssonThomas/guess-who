@@ -1,7 +1,8 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
+import Link from "next/link";
 import GameLayout from "../../components/GameLayout";
+import LogoutButton from "@/components/LogoutButton";
 
 type Players = {
   error: true | null;
@@ -24,14 +25,15 @@ type Player = {
 
 const GuessWhoGame = async () => {
   const supabase = createServerComponentClient<Players>({ cookies });
-  const response = await supabase.from("players").select("*");
 
-  if (response.error) {
-    console.error("Supabase query error:", response.error);
+  const playersResponse = await supabase.from("players").select("*");
+
+  if (playersResponse.error) {
+    console.error("Supabase query error:", playersResponse.error);
     return <div>Error fetching data</div>;
   }
 
-  const { data } = response;
+  const { data } = playersResponse;
   if (!data) {
     console.error("No data found in the Supabase response.");
     return <div>No data available</div>;
@@ -42,10 +44,15 @@ const GuessWhoGame = async () => {
     image: player.user_image,
     id: player.id,
   }));
-  console.log(players);
 
   return (
     <div className="w-screen h-screen">
+      <form action="/auth/sign-out" method="post">
+        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover absolute right-8 top-8 text-white">
+          Logout
+        </button>
+      </form>
+
       <GameLayout players={players} />
     </div>
   );
