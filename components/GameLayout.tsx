@@ -13,12 +13,12 @@ const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
   const [playersArray, setPlayersArray] = useState(players);
   const [guess, setGuess] = useState(null);
 
-  if (guess) {
+  if (guess !== null) {
     const filteredPlayers: Player[] = playersArray.filter((player) => {
       const playerAnswer = player[guess];
-      return playerAnswer !== guess;
+      return playerAnswer === selectedPlayer[guess];
     });
-
+    setGuess(null);
     setPlayersArray(filteredPlayers);
   }
 
@@ -34,14 +34,17 @@ const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
           />
         ))}
       </div>
-      {AllGuesses.map((SingleGuess) => (
-        <GameGuess
-          guessDBname={SingleGuess.dbName}
-          guessText={SingleGuess.questionText}
-          guessed={SingleGuess.isGuessed}
-          key={SingleGuess.key}
-        />
-      ))}
+      <div className="w-full flex justify-around flex-wrap gap-8">
+        {AllGuesses.map((SingleGuess) => (
+          <GameGuess
+            guessDBname={SingleGuess.dbName}
+            guessText={SingleGuess.questionText}
+            guessed={SingleGuess.isGuessed}
+            setGuess={setGuess}
+            key={SingleGuess.key}
+          />
+        ))}
+      </div>
     </div>
   );
 };
