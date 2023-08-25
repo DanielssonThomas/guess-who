@@ -1,9 +1,8 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import Link from "next/link";
 import GameLayout from "../../components/GameLayout";
-import LogoutButton from "@/components/LogoutButton";
 import { Player } from "../global";
+
 type Players = {
   error: true | null;
   data: Player[];

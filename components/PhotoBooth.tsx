@@ -10,13 +10,13 @@ const PhotoBooth = (props: any) => {
   const capture = async (e: any) => {
     e.preventDefault();
     const canvas: any = await html2canvas(webcamRef.current.video);
-    const dataUrl: any = canvas.toDataURL("image/png");
+    const dataUrl: any = canvas.toDataURL("image/webp");
     setPhotoUrl(dataUrl);
   };
 
   return photoUrl === null ? (
     <div className="flex flex-col justify-center">
-      <Webcam audio={false} ref={webcamRef} screenshotFormat="image/png" />
+      <Webcam audio={false} ref={webcamRef} screenshotFormat="image/webp" />
       <button
         className="bg-orange-400 rounded px-4 py-2 text-white mb-2"
         onClick={capture}
