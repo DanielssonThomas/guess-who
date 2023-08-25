@@ -24,14 +24,23 @@ type Player = {
 };
 
 const GuessWhoGame = async () => {
+  const shufflePlayers = (players: Player[]) => {
+    for (let i = players.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [players[i], players[j]] = [players[j], players[i]];
+    }
+  };
+
   const supabase = createServerComponentClient<Players>({ cookies });
 
-  const playersResponse = await supabase.from("players").select("*");
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (playersResponse.error) {
-    console.error("Supabase query error:", playersResponse.error);
-    return <div>Error fetching data</div>;
-  }
+  const playersResponse = await supabase
+    .from("players")
+    .select("*")
+    .not("id", "eq", user?.id);
 
   const { data } = playersResponse;
   if (!data) {
@@ -45,6 +54,8 @@ const GuessWhoGame = async () => {
     id: player.id,
   }));
 
+  shufflePlayers(players);
+  const selectedPlayers = players.slice(0, 25);
   return (
     <div className="w-screen h-screen">
       <form action="/auth/sign-out" method="post">
@@ -53,7 +64,7 @@ const GuessWhoGame = async () => {
         </button>
       </form>
 
-      <GameLayout players={players} />
+      <GameLayout players={selectedPlayers} />
     </div>
   );
 };
