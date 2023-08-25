@@ -11,12 +11,14 @@ interface GameLayoutProps {
   selectedPlayer: Player;
 }
 
+let victory = false;
+
 const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
   const [playersArray, setPlayersArray] = useState(players);
   const [guesses, setGuesses] = useState(AllGuesses);
   const [question, setQuestion] = useState(null);
-  const [userGuess, setUserGuess] = useState(null);
-
+  const [userGuess, setUserGuess] = useState<string>("");
+  const [endGame, setEndGame] = useState<boolean>(false);
   if (question !== null) {
     const filteredPlayers: Player[] = playersArray.filter((player) => {
       const playerAnswer = player[question];
@@ -38,10 +40,21 @@ const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
     setPlayersArray(filteredPlayers);
   }
 
-  return playersArray.length !== 1 ? (
+  const handleGuess = () => {
+    if (userGuess === selectedPlayer.id) {
+      victory = true;
+    }
+
+    setEndGame(true);
+  };
+
+  return endGame === false ? (
     <div className="w-full min-h-screen bg-slate-800">
-      {userGuess !== null ? (
-        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover absolute right-8 top-20 text-white">
+      {userGuess !== "" ? (
+        <button
+          className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover absolute right-8 top-20 text-white"
+          onClick={handleGuess}
+        >
           Guess!
         </button>
       ) : (
@@ -55,6 +68,7 @@ const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
             image={player.user_image}
             selected={userGuess === player.id ? true : false}
             setUserGuess={setUserGuess}
+            cardKey={player.id}
             key={player.id}
           />
         ))}
@@ -67,6 +81,7 @@ const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
             guessed={SingleGuess.isGuessed}
             answeredResult={SingleGuess.AnsweredResult}
             setGuess={setQuestion}
+            guessKey={SingleGuess.key}
             key={SingleGuess.key}
           />
         ))}
@@ -78,7 +93,7 @@ const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
         first_name={selectedPlayer.first_name}
         last_name={selectedPlayer.last_name}
         user_imageUrl={selectedPlayer.user_image}
-        victory={true}
+        victory={victory}
       />
     </div>
   );
