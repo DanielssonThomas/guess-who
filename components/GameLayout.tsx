@@ -4,6 +4,8 @@ import Card from "./Card";
 import { Player } from "@/app/global";
 import GameGuess from "./GameGuess";
 import AllGuesses from "@/lib/AllGuesses";
+import GameFinished from "./GameFinished";
+
 interface GameLayoutProps {
   players: Player[];
   selectedPlayer: Player;
@@ -12,38 +14,47 @@ interface GameLayoutProps {
 const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
   const [playersArray, setPlayersArray] = useState(players);
   const [guesses, setGuesses] = useState(AllGuesses);
-  const [guess, setGuess] = useState(null);
+  const [question, setQuestion] = useState(null);
+  const [userGuess, setUserGuess] = useState(null);
 
-  if (guess !== null) {
+  if (question !== null) {
     const filteredPlayers: Player[] = playersArray.filter((player) => {
-      const playerAnswer = player[guess];
-      return playerAnswer === selectedPlayer[guess];
+      const playerAnswer = player[question];
+      return playerAnswer === selectedPlayer[question];
     });
 
     setGuesses((prevGuesses) =>
       prevGuesses.map((prevGuess) =>
-        prevGuess.dbName === guess
+        prevGuess.dbName === question
           ? {
               ...prevGuess,
               isGuessed: true,
-              AnsweredResult: selectedPlayer[guess],
+              AnsweredResult: selectedPlayer[question],
             }
           : prevGuess
       )
     );
-
-    setGuess(null);
+    setQuestion(null);
     setPlayersArray(filteredPlayers);
   }
 
-  return (
+  return playersArray.length !== 1 ? (
     <div className="w-full min-h-screen bg-slate-800">
+      {userGuess !== null ? (
+        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover absolute right-8 top-20 text-white">
+          Guess!
+        </button>
+      ) : (
+        <div></div>
+      )}
       <div className="grid grid-cols-5 w-full gap-4 px-32 pt-8 mb-10 h-full">
         {playersArray.map((player) => (
           <Card
             twStyle="col-span-1 h-8"
             name={player.first_name}
             image={player.user_image}
+            selected={userGuess === player.id ? true : false}
+            setUserGuess={setUserGuess}
             key={player.id}
           />
         ))}
@@ -55,11 +66,20 @@ const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
             guessText={SingleGuess.questionText}
             guessed={SingleGuess.isGuessed}
             answeredResult={SingleGuess.AnsweredResult}
-            setGuess={setGuess}
+            setGuess={setQuestion}
             key={SingleGuess.key}
           />
         ))}
       </div>
+    </div>
+  ) : (
+    <div>
+      <GameFinished
+        first_name={selectedPlayer.first_name}
+        last_name={selectedPlayer.last_name}
+        user_imageUrl={selectedPlayer.user_image}
+        victory={true}
+      />
     </div>
   );
 };
