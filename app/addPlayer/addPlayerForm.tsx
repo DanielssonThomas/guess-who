@@ -1,6 +1,6 @@
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { PlayersRow } from "../global";
+import { Player } from "../global";
 import { redirect } from "next/navigation";
 import PhotoBooth from "@/components/PhotoBooth";
 import Questions from "@/components/QuestionList";
@@ -8,7 +8,7 @@ import Questions from "@/components/QuestionList";
 const AddPlayerForm = async () => {
   const registerPlayer = async (formData: FormData) => {
     "use server";
-    const supabase = createServerActionClient<PlayersRow>({ cookies });
+    const supabase = createServerActionClient<Player>({ cookies });
     const first_name = formData.get("first_name");
     const last_name = formData.get("last_name");
     const user_image = formData.get("user_image");

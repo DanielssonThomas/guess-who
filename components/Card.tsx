@@ -3,9 +3,9 @@ import Image from "next/image";
 import clsx from "clsx";
 
 interface GameCardProps {
-  name: string;
-  image: string;
-  key: number;
+  name: string | null;
+  image: string | null;
+  key: string;
   twStyle: string;
 }
 const GameCard = ({ name, image, key, twStyle }: GameCardProps) => {

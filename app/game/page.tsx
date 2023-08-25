@@ -3,24 +3,13 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import GameLayout from "../../components/GameLayout";
 import LogoutButton from "@/components/LogoutButton";
-
+import { Player } from "../global";
 type Players = {
   error: true | null;
-  data: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    user_image: string;
-  };
+  data: Player[];
   count: number | null;
   status: number;
   statusText: string;
-};
-
-type Player = {
-  name: string;
-  image: string;
-  id: number;
 };
 
 const GuessWhoGame = async () => {
@@ -48,14 +37,29 @@ const GuessWhoGame = async () => {
     return <div>No data available</div>;
   }
 
-  const players: Player[] = data.map((player) => ({
-    name: player.first_name,
-    image: player.user_image,
+  const players: Player[] = data.map((player: Player) => ({
+    first_name: player.first_name,
+    last_name: player.last_name,
+    has_glasses: player.has_glasses,
+    drinks_coffee: player.drinks_coffee,
+    has_drivers_licence: player.has_drivers_licence,
+    likes_sports: player.likes_sports,
+    owns_console: player.owns_console,
+    plays_instrument: player.plays_instrument,
+    speaks_spanish: player.speaks_spanish,
+    uses_mac: player.uses_mac,
+    was_at_way_out_west: player.was_at_way_out_west,
+    watched_GOT: player.was_at_way_out_west,
+    user_image: player.user_image,
     id: player.id,
   }));
 
   shufflePlayers(players);
   const selectedPlayers = players.slice(0, 25);
+
+  const randomPlayer = Math.floor(Math.random() * 25);
+  const selectedPlayer = selectedPlayers[randomPlayer];
+  console.log(selectedPlayer);
   return (
     <div className="w-screen h-screen">
       <form action="/auth/sign-out" method="post">
@@ -64,7 +68,7 @@ const GuessWhoGame = async () => {
         </button>
       </form>
 
-      <GameLayout players={selectedPlayers} />
+      <GameLayout players={selectedPlayers} selectedPlayer={selectedPlayer} />
     </div>
   );
 };
