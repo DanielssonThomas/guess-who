@@ -11,6 +11,7 @@ interface GameLayoutProps {
 
 const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
   const [playersArray, setPlayersArray] = useState(players);
+  const [guesses, setGuesses] = useState(AllGuesses);
   const [guess, setGuess] = useState(null);
 
   if (guess !== null) {
@@ -18,6 +19,19 @@ const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
       const playerAnswer = player[guess];
       return playerAnswer === selectedPlayer[guess];
     });
+
+    setGuesses((prevGuesses) =>
+      prevGuesses.map((prevGuess) =>
+        prevGuess.dbName === guess
+          ? {
+              ...prevGuess,
+              isGuessed: true,
+              AnsweredResult: selectedPlayer[guess],
+            }
+          : prevGuess
+      )
+    );
+
     setGuess(null);
     setPlayersArray(filteredPlayers);
   }
@@ -34,12 +48,13 @@ const Layout: React.FC<GameLayoutProps> = ({ players, selectedPlayer }) => {
           />
         ))}
       </div>
-      <div className="w-full flex justify-around flex-wrap gap-8">
-        {AllGuesses.map((SingleGuess) => (
+      <div className="w-full flex justify-around flex-wrap gap-6 absolute bottom-4">
+        {guesses.map((SingleGuess) => (
           <GameGuess
             guessDBname={SingleGuess.dbName}
             guessText={SingleGuess.questionText}
             guessed={SingleGuess.isGuessed}
+            answeredResult={SingleGuess.AnsweredResult}
             setGuess={setGuess}
             key={SingleGuess.key}
           />
