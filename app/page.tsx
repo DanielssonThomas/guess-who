@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import AddPlayerForm from "./addPlayer/addPlayerForm";
 import { Database } from "@/lib/database.types";
-
+import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 export default async function Index() {
@@ -12,6 +12,17 @@ export default async function Index() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const { error, data } = await supabase
+    .from("players")
+    .select("id")
+    .match({ id: user?.id });
+
+  if (error) {
+    console.log(error);
+  }
+  if (data?.length === 1) {
+    redirect("/game");
+  }
   return user?.aud === "authenticated" ? (
     <div className="w-screen flex flex-col items-center">
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
