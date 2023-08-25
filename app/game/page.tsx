@@ -2,6 +2,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import GameLayout from "../../components/GameLayout";
 import { Player } from "../global";
+import { redirect } from "next/navigation";
 
 type Players = {
   error: true | null;
@@ -20,6 +21,13 @@ const GuessWhoGame = async () => {
   };
 
   const supabase = createServerComponentClient<Players>({ cookies });
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    redirect("/");
+  }
 
   const {
     data: { user },
