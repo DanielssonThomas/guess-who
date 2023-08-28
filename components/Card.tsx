@@ -20,7 +20,9 @@ const GameCard = ({
 }: GameCardProps) => {
   return image !== null ? (
     <div
-      className={`h-[110px] text-center flex flex-col items-center justify-center cursor-pointer`}
+      className={`h-[110px] text-center flex flex-col items-center justify-center cursor-pointer ${
+        selected ? "border border-white rounded" : ""
+      }`}
       key={cardKey}
       onClick={() => setUserGuess(cardKey)}
     >
@@ -29,7 +31,9 @@ const GameCard = ({
     </div>
   ) : (
     <div
-      className={`h-[110px] text-center flex flex-col items-center justify-center cursor-pointer`}
+      className={`h-[110px] text-center flex flex-col items-center justify-center cursor-pointer ${
+        selected ? "border border-white rounded" : ""
+      }`}
       key={cardKey}
       onClick={() => setUserGuess(cardKey)}
     >

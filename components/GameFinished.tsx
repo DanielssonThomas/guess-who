@@ -6,6 +6,7 @@ interface GameFinishedProps {
   first_name: string | null;
   last_name: string | null;
   user_imageUrl: string | null;
+  guessCount: number;
   victory: boolean;
 }
 
@@ -13,6 +14,7 @@ const GameFinished = ({
   first_name,
   last_name,
   user_imageUrl,
+  guessCount,
   victory,
 }: GameFinishedProps) => {
   return (
@@ -41,6 +43,7 @@ const GameFinished = ({
             {first_name} {last_name}
           </h3>
         </div>
+        <h3>You guessed after {guessCount} questions!</h3>
         <a href="/game" className="bg-green-700 rounded px-4 py-2 mb-2">
           Play again
         </a>
